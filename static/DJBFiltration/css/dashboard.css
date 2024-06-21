@@ -26,65 +26,25 @@
 --color-red-dark:#b33535;
 --color-blue-light:#6edbe7;
 --color-blue-dark:#176a6d;
---color-amber-light:#F98E41;
+
 --color-amber-dark:#DD6102;
---color-light-bg: #f5f5f5;
---color-light-text: #333333;
---color-light-red-dark: #ff6666;
---color-light-red-light: #ffcccc;
---color-light-green-dark: #66b266;
---color-light-green-light: #ccffcc;
---color-light-blue-dark: #6699ff;
---color-light-blue-light: #cce0ff;
---color-light-amber-dark: #ffb366;
---color-light-amber-light: #ffe0cc;
---color-light-bg: #ffffff;              /* Light background */
---color-light-text: #000000;            /* Black text */
---color-light-red-dark: #ffcccc;        /* Light red dark */
---color-light-red-light: #ffe6e6;       /* Light red light */
---color-light-green-dark: #ccffcc;      /* Light green dark */
---color-light-green-light: #e6ffe6;     /* Light green light */
---color-light-blue-dark: #ccccff;       /* Light blue dark */
---color-light-blue-light: #e6e6ff;      /* Light blue light */
---color-light-amber-dark: #ffcc99;      /* Light amber dark */
---color-light-amber-light: #ffe6cc;     /* Light amber light */
---color-light-yellow-dark: #ffff99;     /* Light yellow dark */
---color-light-yellow-light: #ffffcc;    /* Light yellow light */
---color-light-purple-dark: #e6ccff;     /* Light purple dark */
---color-light-purple-light: #f2e6ff;
 
-  --color-dark-green: #006400; /* Dark Green */
-  --color-dark-orange: #FF8C00; /* Dark Orange */
-  --color-lightthemebg: #FFFFFF; /* Example light theme background */
-  --color-white: #FFFFFF; /* White color */
-  --color-red-dark: #8B0000; /* Dark Red */
-  --color-red-light: #FFA07A; /* Light Red */
-  --color-gd: #228B22; /* Green Dark */
-  --color-blue-dark: #00008B; /* Dark Blue */
-  --color-blue-light: #ADD8E6; /* Light Blue */
-  --color-amber-dark: #FFBF00; /* Amber Dark */
-  --color-amber-light: #FFD700; /* Amber Light */
-  --color-green-dark: #006400; /* Green Dark */
-  --color-amber-dark: #FF8C00; /* Dark Orange for Amber */
+/*Light theme colors*/
 
-
-  --color-dark-bg: #2e2e2e;                /* Dark background */
-  --color-dark-text: #f0f0f0;              /* Light text */
-  --color-dark-red-dark: #8b0000;          /* Dark red dark */
-  --color-dark-red-light: #b22222;         /* Dark red light */
-  --color-dark-green-dark: #006400;        /* Dark green dark */
-  --color-dark-green-light: #228b22;       /* Dark green light */
-  --color-dark-blue-dark: #00008b;         /* Dark blue dark */
-  --color-dark-blue-light: #4169e1;        /* Dark blue light */
-  --color-dark-amber-dark: #8b4513;        /* Dark amber dark */
-  --color-dark-amber-light: #cd853f;       /* Dark amber light */
-  --color-dark-yellow-dark: #8b8000;       /* Dark yellow dark */
-  --color-dark-yellow-light: #bdb76b;      /* Dark yellow light */
-  --color-dark-purple-dark: #4b0082;       /* Dark purple dark */
-  --color-dark-purple-light: #9370db;      /* Dark purple light */
-
-
-
+--color-lightthemebg:#FBFFDC;
+--color-gd:#1E5128;
+--color-b:#191A19;
+--color-gl:#D8E9A8;
+--color-orange-light:#DC5F00;
+--color-orange-dark:#C40C0C;
+--color-rd:#C40C0C;
+--color-rl:#FF0000;
+--light-green: #9DDE8B;
+--dark-green: #40A578;
+--rohgreen: #41B06E;
+--color-amber-light: #FF8F00;
+--rohred: #EE4E4E;
+--rohorange:#F98E41;
 }
 
 
@@ -96,6 +56,7 @@
   font-style: normal;
   font-variation-settings:
     "slnt" 0;
+
 }
 
 .inter-bold {
@@ -128,6 +89,7 @@ body {
 	margin: 0;
 	font-family: sans-serif;
 	font-weight: 100;
+  box-shadow: 10px 10px lightblue;
 }
 
 #themeButton {
@@ -164,6 +126,7 @@ body {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  
 }
 
 #no-internet-popup {
@@ -181,22 +144,7 @@ body {
   transition: opacity 0.5s ease-in-out; /* Smooth fading */
 }
 
-
-
 .card-container {
-    /* border-radius: 2%;
-    margin-top: 0.5%;
-    margin-bottom: 0.5%;
-    margin-right: 1%;
-    margin-left: 1;
-    position:relative;
-    min-height: 31%;
-    max-height: 35%;
-    min-width: 32%;
-    max-width: 30%; 
-    background-color: var(--color-gainsboro);
-    box-shadow: 5px 5px 5px lightblue;
-    gap: 100px; */
     border-radius: 2%;
     margin-top: 0.2%;
     margin-bottom: 0.5%;
@@ -211,7 +159,11 @@ body {
     overflow: hidden;
     box-shadow: 5px 5px 5px lightblue;
     gap: 90px; 
-
+    flex:1 0 20%;
+    /* box-shadow:  4px 4px 4px #585858,
+                 0 0 0 #6b6b6b,
+                 0 0 0 #585858 inset,
+                 0 0 0 #6b6b6b inset; */
 
 }
 
@@ -263,6 +215,7 @@ body {
 
 }
 
+/* Define the glow animation */
 @keyframes glowAnimation{
   0% {
       filter: brightness(1);
@@ -275,10 +228,14 @@ body {
   }
 }
 
+/* Apply the glow effect */
 .glow-animation {
   animation: glowAnimation 5s ease-out;
   
 }
+
+
+
 .card-container:not(:nth-of-type(4n)) {
   margin-right: 0.3%;
 }
@@ -451,7 +408,6 @@ body {
   body {  font-size: 20.5px;}
 }
 
-
 @media screen and (max-width: 2000px), screen and (max-height: 1200px){
   body {  font-size: 19.5px;}
 }
@@ -485,7 +441,6 @@ body {
 
 }
 
-
 @media screen and (max-width: 400px),  screen and (max-height: 200px){
   body {  font-size: 6px;}
 }
@@ -495,38 +450,18 @@ body {
     flex-direction: column;
     flex: 100%;
     max-width: 100%;
-    height: 33.5%;
-    font-size: 12px;
     display: block;
+    height: 32%;
+    font-size: 12px;
   }
-  .card-container .inter-normal{
-    max-width: 100%;
-    max-height: 100;
+
+  
+  .inter-normal{
+    flex: none;
+    width: 100%;
+    
   }
-}
-@keyframes glow {
-  0% {
-      box-shadow: 0 0 5px #fff;
-  }
-  50% {
-      box-shadow: 0 0 20px #fff;
-  }
-  100% {
-      box-shadow: 0 0 5px #fff;
-  }
+  
 }
 
-.glow {
-  animation: glow 1s infinite alternate;
-}
-.card {
-  width: 200px;
-  height: 200px;
-  border: 1px solid #ccc;
-  padding: 20px;
-  transition: all 0.3s ease; /* CSS transition for smooth animation */
-}
 
-.card.updated {
-  background-color: lightblue;
-}
