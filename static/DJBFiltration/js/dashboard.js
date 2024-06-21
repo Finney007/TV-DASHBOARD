@@ -39,18 +39,89 @@ function toggleTheme()
 
 function fChangeColor(id,data) {
     
+    
 
     try{
         const body = document.body;
         if(currentTheme==='default')
         {
-        body.style.backgroundColor = "var(--color-black)";
+            body.style.backgroundColor = "var(--color-black)";
+            document.getElementById("card-status-value-"+id).innerHTML = data.status;
+            document.getElementById("card-online-time-value-"+id).innerHTML = "for " + fSecondsToHm(data.runDuration*60);
+            document.getElementById("card-runtime-value-"+id).innerHTML = fSecondsToHm((new Date().getTime()/1000) - data.lastDataReceived);
+            document.getElementById("card-lastbackwash-value-"+id).innerHTML = moment(data.lastDataReceived*1000).format("DD-MM-YYYY h:mm:ss");
+            // document.getElementById("card-lastbackwash-value-"+id).innerHTML = moment.utc((data.lastDataReceived)*1000).format("DD-MM-YYYY hh:mm:ss"); // support for pi devices
+            document.getElementById("card-title-"+id).style.color = "var(--color-white)";
+            document.getElementById("card-background-"+id).style.color = "var(--color-black)";
+            document.getElementById("card-rof-"+id).style.display = "none";
+            document.getElementById("card-rof-value-"+id).style.display = "none";
+            document.getElementById("card-loh-"+id).style.display = "none";
+            document.getElementById("card-loh-value-"+id).style.display = "none";
+            document.getElementById("card-press1-"+id).style.display = "none";
+            document.getElementById("card-press1-value-"+id).style.display = "none";
+            document.getElementById("card-press2-"+id).style.display = "none";
+            document.getElementById("card-press2-value-"+id).style.display = "none";
+    
+            if(data.status == ""){
+    
+                document.getElementById("card-"+id).style.backgroundColor = "var(--color-red-dark)";
+                document.getElementById("card-background-"+id).style.backgroundColor = "var(--color-red-light)";
+                document.getElementById("card-status-value-"+id).innerHTML = "Data not received";
+    
+            }
+            else if(data.status == "Maintenance"){
+    
+                document.getElementById("card-"+id).style.backgroundColor = "var(--color-red-dark)";
+                document.getElementById("card-background-"+id).style.backgroundColor = "var(--color-red-light)";
+                document.getElementById("card-status-value-"+id).innerHTML = "Maintenance";
+    
+            }
+            else if( data.status == "Filtration"){
+    
+                document.getElementById("card-"+id).style.backgroundColor = "var(--dark-green)";
+                document.getElementById("card-background-"+id).style.backgroundColor = "var(--light-green)";
+                document.getElementById("card-rof-"+id).style.display = "inline";
+                document.getElementById("card-rof-value-"+id).innerHTML = data.rof.value + " m<sup>3</sup>/hr";
+                document.getElementById("card-rof-value-"+id).style.display = "inline";
+                document.getElementById("card-loh-"+id).style.display = "inline";
+                document.getElementById("card-loh-value-"+id).innerHTML = data.loh.value + " %";
+                document.getElementById("card-loh-value-"+id).style.display = "inline";
+                document.getElementById("card-loh-value-"+id).style.color = "var(--color-white)";
+    
+                if(data.loh.value < 10){
+                    document.getElementById("card-loh-value-"+id).style.backgroundColor = " var(--rohgreen)";
+                }
+                else if(data.loh.value >= 10 && data.loh.value < 20){
+                    document.getElementById("card-loh-value-"+id).style.backgroundColor = " var(--rohorange)";
+                }
+                else {
+                    document.getElementById("card-loh-value-"+id).style.backgroundColor = " var(--rohred)";
+                }
+            }
+            else if(data.status == "Backwash"){
+                document.getElementById("card-"+id).style.backgroundColor = "var(--color-blue-dark)";
+                document.getElementById("card-background-"+id).style.backgroundColor = "var(--color-blue-light)";
+                document.getElementById("card-press1-"+id).style.display = "inline";
+                document.getElementById("card-press1-value-"+id).innerHTML = data.press1.value + " bar";
+                document.getElementById("card-press1-value-"+id).style.display = "inline";
+                document.getElementById("card-press2-"+id).style.display = "inline";
+                document.getElementById("card-press2-value-"+id).innerHTML = data.press2.value + " bar";
+                document.getElementById("card-press2-value-"+id).style.display = "inline";
+            }
+            else if(data.status == "Idle"){
+                document.getElementById("card-"+id).style.backgroundColor = "var(--color-amber-dark)";
+                document.getElementById("card-background-"+id).style.backgroundColor = "var(--color-amber-light)";
+            }
+    }
+    else 
+    {
+        body.style.backgroundColor = "var(--color-lightthemebg)";
         document.getElementById("card-status-value-"+id).innerHTML = data.status;
         document.getElementById("card-online-time-value-"+id).innerHTML = "for " + fSecondsToHm(data.runDuration*60);
         document.getElementById("card-runtime-value-"+id).innerHTML = fSecondsToHm((new Date().getTime()/1000) - data.lastDataReceived);
         document.getElementById("card-lastbackwash-value-"+id).innerHTML = moment(data.lastDataReceived*1000).format("DD-MM-YYYY h:mm:ss");
         // document.getElementById("card-lastbackwash-value-"+id).innerHTML = moment.utc((data.lastDataReceived)*1000).format("DD-MM-YYYY hh:mm:ss"); // support for pi devices
-        document.getElementById("card-title-"+id).style.color = "var(--color-black)";
+        document.getElementById("card-title-"+id).style.color = "var(--color-white)";
         document.getElementById("card-background-"+id).style.color = "var(--color-white)";
         document.getElementById("card-rof-"+id).style.display = "none";
         document.getElementById("card-rof-value-"+id).style.display = "none";
@@ -63,78 +134,8 @@ function fChangeColor(id,data) {
 
         if(data.status == ""){
 
-            document.getElementById("card-"+id).style.backgroundColor = "var(--color-red-light)";
-            document.getElementById("card-background-"+id).style.backgroundColor = "var(--color-red-dark)";
-            document.getElementById("card-status-value-"+id).innerHTML = "Data not received";
-
-        }
-        else if(data.status == "Maintenance"){
-
-            document.getElementById("card-"+id).style.backgroundColor = "var(--color-red-light)";
-            document.getElementById("card-background-"+id).style.backgroundColor = "var(--color-red-dark)";
-            document.getElementById("card-status-value-"+id).innerHTML = "Maintenance"; 
-
-        }
-        else if( data.status == "Filtration"){
-
-            document.getElementById("card-"+id).style.backgroundColor = "var(--color-green-light)";
-            document.getElementById("card-background-"+id).style.backgroundColor = "var(--color-green-dark)";
-            document.getElementById("card-rof-"+id).style.display = "inline";
-            document.getElementById("card-rof-value-"+id).innerHTML = data.rof.value + " m<sup>3</sup>/hr";
-            document.getElementById("card-rof-value-"+id).style.display = "inline";
-            document.getElementById("card-loh-"+id).style.display = "inline";
-            document.getElementById("card-loh-value-"+id).innerHTML = data.loh.value + " %";
-            document.getElementById("card-loh-value-"+id).style.display = "inline";
-            document.getElementById("card-loh-value-"+id).style.color = "var(--color-white)";
-
-            if(data.loh.value < 10){
-                document.getElementById("card-loh-value-"+id).style.backgroundColor = " var(--color-green-light)";
-            }
-            else if(data.loh.value >= 10 && data.loh.value < 20){
-                document.getElementById("card-loh-value-"+id).style.backgroundColor = " var(--color-amber-light)";
-            }
-            else {
-                document.getElementById("card-loh-value-"+id).style.backgroundColor = " var(--color-red-light)";
-            }
-        }
-        else if(data.status == "Backwash"){
-            document.getElementById("card-"+id).style.backgroundColor = "var(--color-blue-light)";
-            document.getElementById("card-background-"+id).style.backgroundColor = "var(--color-blue-dark)";
-            document.getElementById("card-press1-"+id).style.display = "inline";
-            document.getElementById("card-press1-value-"+id).innerHTML = data.press1.value + " bar";
-            document.getElementById("card-press1-value-"+id).style.display = "inline";
-            document.getElementById("card-press2-"+id).style.display = "inline";
-            document.getElementById("card-press2-value-"+id).innerHTML = data.press2.value + " bar";
-            document.getElementById("card-press2-value-"+id).style.display = "inline";
-        }
-        else if(data.status == "Idle"){
-            document.getElementById("card-"+id).style.backgroundColor = "var(--color-amber-light)";
-            document.getElementById("card-background-"+id).style.backgroundColor = "var(--color-amber-dark)";
-        }
-    }
-    else
-    {
-        body.style.backgroundColor = "var(--color-lightthemebg)";
-        document.getElementById("card-status-value-"+id).innerHTML = data.status;
-        document.getElementById("card-online-time-value-"+id).innerHTML = "for " + fSecondsToHm(data.runDuration*60);
-        document.getElementById("card-runtime-value-"+id).innerHTML = fSecondsToHm((new Date().getTime()/1000) - data.lastDataReceived);
-        document.getElementById("card-lastbackwash-value-"+id).innerHTML = moment(data.lastDataReceived*1000).format("DD-MM-YYYY h:mm:ss");
-        // document.getElementById("card-lastbackwash-value-"+id).innerHTML = moment.utc((data.lastDataReceived)*1000).format("DD-MM-YYYY hh:mm:ss"); // support for pi devices
-        document.getElementById("card-title-"+id).style.color = "var(--color-white)";
-        document.getElementById("card-background-"+id).style.color = "var(--color-black)";
-        document.getElementById("card-rof-"+id).style.display = "none";
-        document.getElementById("card-rof-value-"+id).style.display = "none";
-        document.getElementById("card-loh-"+id).style.display = "none";
-        document.getElementById("card-loh-value-"+id).style.display = "none";
-        document.getElementById("card-press1-"+id).style.display = "none";
-        document.getElementById("card-press1-value-"+id).style.display = "none";
-        document.getElementById("card-press2-"+id).style.display = "none";
-        document.getElementById("card-press2-value-"+id).style.display = "none";
-
-        if(data.status == ""){
-
-            document.getElementById("card-"+id).style.backgroundColor = "var(--color-red-dark)";
-            document.getElementById("card-background-"+id).style.backgroundColor = "var(--color-red-light)";
+            document.getElementById("card-"+id).style.backgroundColor = "var(--color-rd)";
+            document.getElementById("card-background-"+id).style.backgroundColor = "var(--color-rl)";
             document.getElementById("card-status-value-"+id).innerHTML = "Data not received";
 
         }
@@ -147,24 +148,24 @@ function fChangeColor(id,data) {
         }
         else if( data.status == "Filtration"){
 
-            document.getElementById("card-"+id).style.backgroundColor = "var(--color-green-dark)";
-            document.getElementById("card-background-"+id).style.backgroundColor = "var(--color-green-light)";
+            document.getElementById("card-"+id).style.backgroundColor = "var(--color-black)";
+            document.getElementById("card-background-"+id).style.backgroundColor = "var(--color-gd)";
             document.getElementById("card-rof-"+id).style.display = "inline";
             document.getElementById("card-rof-value-"+id).innerHTML = data.rof.value + " m<sup>3</sup>/hr";
             document.getElementById("card-rof-value-"+id).style.display = "inline";
             document.getElementById("card-loh-"+id).style.display = "inline";
             document.getElementById("card-loh-value-"+id).innerHTML = data.loh.value + " %";
             document.getElementById("card-loh-value-"+id).style.display = "inline";
-            document.getElementById("card-loh-value-"+id).style.color = "var(--color-white)";
+            document.getElementById("card-loh-value-"+id).style.color = "var(--color-black)";
 
             if(data.loh.value < 10){
-                document.getElementById("card-loh-value-"+id).style.backgroundColor = " var(--color-green-dark)";
+                document.getElementById("card-loh-value-"+id).style.backgroundColor = " var(--color-gl)";
             }
             else if(data.loh.value >= 10 && data.loh.value < 20){
-                document.getElementById("card-loh-value-"+id).style.backgroundColor = " var(--color-amber-dark)";
+                document.getElementById("card-loh-value-"+id).style.backgroundColor = " var(--color-amber-light)";
             }
             else {
-                document.getElementById("card-loh-value-"+id).style.backgroundColor = " var(--color-red-dark)";
+                document.getElementById("card-loh-value-"+id).style.backgroundColor = " var(--color-red-light)";
             }
         }
         else if(data.status == "Backwash"){
@@ -178,8 +179,8 @@ function fChangeColor(id,data) {
             document.getElementById("card-press2-value-"+id).style.display = "inline";
         }
         else if(data.status == "Idle"){
-            document.getElementById("card-"+id).style.backgroundColor = "var(--color-amber-dark)";
-            document.getElementById("card-background-"+id).style.backgroundColor = "var(--color-amber-light)";
+            document.getElementById("card-"+id).style.backgroundColor = "var(--color-orange-dark)";
+            document.getElementById("card-background-"+id).style.backgroundColor = "var(--color-orange-light)";
         }
     }
         }
@@ -417,6 +418,18 @@ function fSortObject(obj) {
 
 let cardStatuses = {};
 
+function initializeCardStatuses() {
+    const cards = document.querySelectorAll(".card");
+    cards.forEach(card => {
+        const cardId = card.id.split("-")[85]; // Assuming id is in the format "card-1", "card-2", etc.
+        const statusElement = card.querySelector(".card-status-value"); // Adjust the selector based on your HTML structure
+        if (statusElement) {
+            const initialStatus = statusElement.innerHTML.trim();
+            cardStatuses[cardId] = initialStatus;
+        }
+    });
+}
+
 window.onload = function() {
     document.querySelectorAll('.card').forEach(card => {
         const id = card.id.split('-')[85]; // Assuming the id is like 'card-1'
@@ -424,14 +437,15 @@ window.onload = function() {
         cardStatuses[id] = initialStatus; // Initialize with the current status
     });
 };
+
 function fUpdateReadings(id, data){
+    
     try {
         const card = document.getElementById("card-" + id);
         
-
         // Update the current card's status in the stored statuses
         const currentStatus = cardStatuses[id] || "";
-
+        console.log(currentStatus);
         // Check if the status has changed
         if (data.status !== currentStatus) {
             
@@ -450,7 +464,7 @@ function fUpdateReadings(id, data){
         }
         
 
-        // Updating car
+        // Updating card data with received data
         document.getElementById("card-status-value-" + id).innerHTML = data.status;
         document.getElementById("card-online-time-value-" + id).innerHTML = "for " + data.runDuration + " minutes";
         document.getElementById("card-runtime-value-" + id).innerHTML = data.runtime;
@@ -459,17 +473,17 @@ function fUpdateReadings(id, data){
     } catch (e) {
         console.log(e);
     }
+
+
     try{
-        const body = document.body;
-       
-        body.style.backgroundColor = "var(--color-black)";
+
         document.getElementById("card-status-value-"+id).innerHTML = data.status;
         document.getElementById("card-online-time-value-"+id).innerHTML = "for " + fSecondsToHm(data.runDuration*60);
         document.getElementById("card-runtime-value-"+id).innerHTML = fSecondsToHm((new Date().getTime()/1000) - data.lastDataReceived);
         document.getElementById("card-lastbackwash-value-"+id).innerHTML = moment(data.lastDataReceived*1000).format("DD-MM-YYYY h:mm:ss");
         // document.getElementById("card-lastbackwash-value-"+id).innerHTML = moment.utc((data.lastDataReceived)*1000).format("DD-MM-YYYY hh:mm:ss"); // support for pi devices
-        document.getElementById("card-title-"+id).style.color = "var(--color-black)";
-        document.getElementById("card-background-"+id).style.color = "var(--color-white)";
+        document.getElementById("card-title-"+id).style.color = "var(--color-white)";
+        document.getElementById("card-background-"+id).style.color = "var(--color-black)";
         document.getElementById("card-rof-"+id).style.display = "none";
         document.getElementById("card-rof-value-"+id).style.display = "none";
         document.getElementById("card-loh-"+id).style.display = "none";
@@ -481,22 +495,22 @@ function fUpdateReadings(id, data){
 
         if(data.status == ""){
 
-            document.getElementById("card-"+id).style.backgroundColor = "var(--color-red-light)";
-            document.getElementById("card-background-"+id).style.backgroundColor = "var(--color-red-dark)";
+            document.getElementById("card-"+id).style.backgroundColor = "var(--color-red-dark)";
+            document.getElementById("card-background-"+id).style.backgroundColor = "var(--color-red-light)";
             document.getElementById("card-status-value-"+id).innerHTML = "Data not received";
 
         }
         else if(data.status == "Maintenance"){
 
-            document.getElementById("card-"+id).style.backgroundColor = "var(--color-red-light)";
-            document.getElementById("card-background-"+id).style.backgroundColor = "var(--color-red-dark)";
-            document.getElementById("card-status-value-"+id).innerHTML = "Maintenance"; 
+            document.getElementById("card-"+id).style.backgroundColor = "var(--color-red-dark)";
+            document.getElementById("card-background-"+id).style.backgroundColor = "var(--color-red-light)";
+            document.getElementById("card-status-value-"+id).innerHTML = "Maintenance";
 
         }
         else if( data.status == "Filtration"){
 
-            document.getElementById("card-"+id).style.backgroundColor = "var(--color-green-light)";
-            document.getElementById("card-background-"+id).style.backgroundColor = "var(--color-green-dark)";
+            document.getElementById("card-"+id).style.backgroundColor = "var(--dark-green)";
+            document.getElementById("card-background-"+id).style.backgroundColor = "var(--light-green)";
             document.getElementById("card-rof-"+id).style.display = "inline";
             document.getElementById("card-rof-value-"+id).innerHTML = data.rof.value + " m<sup>3</sup>/hr";
             document.getElementById("card-rof-value-"+id).style.display = "inline";
@@ -506,18 +520,18 @@ function fUpdateReadings(id, data){
             document.getElementById("card-loh-value-"+id).style.color = "var(--color-white)";
 
             if(data.loh.value < 10){
-                document.getElementById("card-loh-value-"+id).style.backgroundColor = " var(--color-green-light)";
+                document.getElementById("card-loh-value-"+id).style.backgroundColor = " var(--rohgreen)";
             }
             else if(data.loh.value >= 10 && data.loh.value < 20){
-                document.getElementById("card-loh-value-"+id).style.backgroundColor = " var(--color-amber-light)";
+                document.getElementById("card-loh-value-"+id).style.backgroundColor = " var(--rohorange)";
             }
             else {
-                document.getElementById("card-loh-value-"+id).style.backgroundColor = " var(--color-red-light)";
+                document.getElementById("card-loh-value-"+id).style.backgroundColor = " var(--rohred)";
             }
         }
         else if(data.status == "Backwash"){
-            document.getElementById("card-"+id).style.backgroundColor = "var(--color-blue-light)";
-            document.getElementById("card-background-"+id).style.backgroundColor = "var(--color-blue-dark)";
+            document.getElementById("card-"+id).style.backgroundColor = "var(--color-blue-dark)";
+            document.getElementById("card-background-"+id).style.backgroundColor = "var(--color-blue-light)";
             document.getElementById("card-press1-"+id).style.display = "inline";
             document.getElementById("card-press1-value-"+id).innerHTML = data.press1.value + " bar";
             document.getElementById("card-press1-value-"+id).style.display = "inline";
@@ -526,17 +540,61 @@ function fUpdateReadings(id, data){
             document.getElementById("card-press2-value-"+id).style.display = "inline";
         }
         else if(data.status == "Idle"){
-            document.getElementById("card-"+id).style.backgroundColor = "var(--color-amber-light)";
-            document.getElementById("card-background-"+id).style.backgroundColor = "var(--color-amber-dark)";
+            document.getElementById("card-"+id).style.backgroundColor = "var(--color-amber-dark)";
+            document.getElementById("card-background-"+id).style.backgroundColor = "var(--color-amber-light)";
         }
     }
-    
     catch (e){
         console.log(e);
     }
+    
+
 }
 
+/* Function to simulate status change and check for glow*/
+
+function simulateStatusChange(cardId) {
+    const statuses = ["Maintenance", "Filtration", "Backwash", "Idle"];
+    let index = 0;
+
+    // Function to cycle through statuses
+    function changeStatus() {
+        // Get the current status
+        const currentStatus = statuses[index % statuses.length];
+        
+        // Create a mock data object with the new status
+        const mockData = {
+            status: currentStatus,
+            runDuration: Math.floor(Math.random() * 1000), // Random duration for testing
+            lastDataReceived: Math.floor(Date.now() / 1000), // Current timestamp
+            rof: { value: Math.random() * 100 }, // Random ROF value
+            loh: { value: Math.random() * 100 }, // Random LOH value
+            press1: { value: Math.random() * 10 }, // Random pressure 1
+            press2: { value: Math.random() * 10 }  // Random pressure 2
+        };
+
+        // Call the fUpdateReadings function with the mock data
+        fUpdateReadings(cardId, mockData);
+
+        // Increment the index to cycle through statuses
+        index++;
+
+        // Repeat the change every 3 seconds
+        setTimeout(changeStatus, 7000);
+    }
+
+    // Start the status change simulation
+    changeStatus();
+}
+
+// To use this function, call it with the ID of the card you want to test
+// Example: simulateStatusChange('1');
+
+
+
+
 function fUpdateSVGCard(){}
+
 function fCreateSVGCard(id, pressure1, pressure2, LOH, ROF){
     let elSVGCardContainer = document.getElementById(id);
     let elSVG =  fCreateElement("object", {"type":"image/svg+xml", "id": "svg-"+id, "class":"svg-element", "data":svg_url}, null);
@@ -556,18 +614,30 @@ function fCreateSVGCard(id, pressure1, pressure2, LOH, ROF){
         elROF.innerHTML = ROF;
     }, false);
     elSVGCardContainer.appendChild(elSVG);
+
 }
+
 function createSvg(id){
     let elBox = fCreateElement("div", {"class":"box-container data-box-container"}, null);
     let elSVGBox = fCreateElement("div", {"class":"box-container svg-box-container","id":"live-svg-"+id}, null);
     elBox.appendChild(elSVGBox);
     return elBox;
 }
+
+
 function createBoxContainer(page_id){
     let elBox = fCreateElement("div", {"class":"data-box-container"}, null);
+
     let elInputBox = fCreateElement("div", {"class":"box-container",
                                             "id":"live-"+page_id}, null);
+
     elBox.appendChild(elInputBox);
     return elBox;
 }
+
+
+
+
+
+
 fSocketConnect();

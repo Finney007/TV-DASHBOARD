@@ -464,4 +464,38 @@ body {
   
 }
 
+@media screen and (max-width: 1080px) and (orientation: landscape) {
+  .card-container {
+    display: block;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 50%;
+    min-height: 100%;
+    font-size : 15px;
+    flex: 1;
+  }
+
+  /*.inter-normal, .inter-italic {
+    flex: 1;
+    max-width: 40%;
+    min-height:20%;
+    font-size : 15px
+  }*/
+
+  .card-title{
+    align-items: center;
+    text-align: center;
+    
+  }
+
+  .card-background{
+    font-size: clamp(12px, 2vw, 15px); 
+    overflow-wrap: break-word; 
+  }
+  .card-status-value{
+    font-size: 25px;
+  }
+}
+
+s
 
